@@ -4,20 +4,31 @@ import java.util.Optional;
 
 import org.jsp.ecommerce.dao.MerchantDao;
 import org.jsp.ecommerce.dto.ResponseStructure;
+import org.jsp.ecommerce.exception.MerchantNotFoundException;
 import org.jsp.ecommerce.model.Merchant;
+import org.jsp.ecommerce.util.AccountStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.bytebuddy.utility.RandomString;
 
 @Service
 public class MerchantService {
     @Autowired
     private MerchantDao merchantDao;
+    @Autowired
+    private ECommerceAppEmailService ecommerceappemailsender;
 
-    public ResponseEntity<ResponseStructure<Merchant>> saveMerchant(Merchant merchant) {
+    public ResponseEntity<ResponseStructure<Merchant>> saveMerchant(Merchant merchant, HttpServletRequest request) {
         ResponseStructure<Merchant> structure = new ResponseStructure<>();
-        structure.setData(merchantDao.savMerchant(merchant));
+        merchant.setStatus(AccountStatus.IN_ACTIVE.toString());
+        merchant.setToken(RandomString.make(45));
+        structure.setData(merchantDao.saveMerchant(merchant));
+        String message= ecommerceappemailsender.sendWelcomeMail(merchant, request);
         structure.setMessage("Merchant Saved");
         structure.setStatusCode(HttpStatus.CREATED.value());
         return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.CREATED);
@@ -59,4 +70,20 @@ public class MerchantService {
 		structure.setStatusCode(HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.NOT_FOUND);
 	}
+	public ResponseEntity<ResponseStructure<String>> activate(String token){
+		Optional<Merchant> recMerchant=merchantDao.findByToken(token);
+		ResponseStructure<String> structure =new ResponseStructure<>();
+		if(recMerchant.isPresent()) { 
+			Merchant merchant = recMerchant.get();
+			merchant.setStatus(AccountStatus.ACTIVE.toString());
+			merchant.setToken(null);
+             merchantDao.saveMerchant(merchant);
+             structure.setData("Merchant Found");
+             structure.setMessage("Account Verified");
+             structure.setStatusCode(HttpStatus.ACCEPTED.value());
+             return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.ACCEPTED);
+			
+	}
+		throw new MerchantNotFoundException("INVALID URL");
+}
 }

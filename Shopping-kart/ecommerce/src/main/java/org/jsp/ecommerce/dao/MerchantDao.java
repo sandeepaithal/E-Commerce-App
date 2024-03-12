@@ -11,7 +11,7 @@ public class MerchantDao {
     @Autowired
     private MerchantRepository merchantRepository;
 
-    public Merchant savMerchant(Merchant merchant) {
+    public Merchant saveMerchant(Merchant merchant) {
         return merchantRepository.save(merchant);
     }
     public Merchant updateMerchant(Merchant merchant){
@@ -23,4 +23,7 @@ public class MerchantDao {
     public Optional<Merchant> verify(long phone, String password) {
 		return merchantRepository.verify(phone, password);
 	}
+    public Optional<Merchant> findByToken(String token){
+    	return merchantRepository.findByToken(token);
+    }
 }
