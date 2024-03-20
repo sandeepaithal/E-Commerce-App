@@ -27,31 +27,47 @@ public class MerchantService {
         ResponseStructure<Merchant> structure = new ResponseStructure<>();
         merchant.setStatus(AccountStatus.IN_ACTIVE.toString());
         merchant.setToken(RandomString.make(45));
-        structure.setData(merchantDao.saveMerchant(merchant));
+        structure.setBody(merchantDao.saveMerchant(merchant));
         String message= ecommerceappemailsender.sendWelcomeMail(merchant, request);
         structure.setMessage("Merchant Saved");
         structure.setStatusCode(HttpStatus.CREATED.value());
         return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.CREATED);
     }
-
     public ResponseEntity<ResponseStructure<Merchant>> updateMerchant(Merchant merchant) {
-        ResponseStructure<Merchant> structure = new ResponseStructure<>();
-        structure.setData(merchantDao.updateMerchant(merchant));
-        structure.setMessage("Merchant updated successfully...");
-        structure.setStatusCode(HttpStatus.ACCEPTED.value());
-        return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.ACCEPTED);
-    }
+		Optional<Merchant> recMerchant = merchantDao.findById(merchant.getId());
+		ResponseStructure<Merchant> structure = new ResponseStructure<>();
+		if (recMerchant.isPresent()) {
+		Merchant dbMerchant = recMerchant.get();
+		 dbMerchant.setEmail(merchant.getEmail());
+		 dbMerchant.setName(merchant.getName());
+		 dbMerchant.setPhone(merchant.getPhone());
+		 dbMerchant.setGst_number(merchant.getGst_number());
+		 dbMerchant.setPassword(merchant.getPassword());
+			
+			structure.setMessage("Merchant Updated");
+			structure.setBody(merchantDao.saveMerchant(merchant));
+			structure.setStatusCode(HttpStatus.ACCEPTED.value());
+			return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.ACCEPTED);
+		}
+		structure.setMessage("Cannot Update Merchant as Id is Invalid");
+		structure.setBody(null);
+		structure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.NOT_FOUND);
+	}
+
+    
+    
     public ResponseEntity<ResponseStructure<Merchant>> verifyMerchant(long phone, String password) {
 		Optional<Merchant> recMerchant = merchantDao.verify(phone, password);
 		ResponseStructure<Merchant> structure = new ResponseStructure<>();
 		if (recMerchant.isPresent()) {
 			structure.setMessage("Verification Succesfull");
-			structure.setData(recMerchant.get());
+			structure.setBody(recMerchant.get());
 			structure.setStatusCode(HttpStatus.OK.value());
 			return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.OK);
 		}
 		structure.setMessage("Invalid Phone Number or Password");
-		structure.setData(null);
+		structure.setBody(null);
 		structure.setStatusCode(HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.NOT_FOUND);
 	}
@@ -60,13 +76,17 @@ public class MerchantService {
 		Optional<Merchant> recMerchant = merchantDao.verify(email, password);
 		ResponseStructure<Merchant> structure = new ResponseStructure<>();
 		if (recMerchant.isPresent()) {
+			Merchant m=recMerchant.get();
+			if(m.getStatus().equals(AccountStatus.IN_ACTIVE.toString())) {
+				throw new IllegalStateException("Account is Not Activated");
+			}
 			structure.setMessage("Verification Succesfull");
-			structure.setData(recMerchant.get());
+			structure.setBody(recMerchant.get());
 			structure.setStatusCode(HttpStatus.OK.value());
 			return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.OK);
 		}
 		structure.setMessage("Invalid email address or Password");
-		structure.setData(null);
+		structure.setBody(null);
 		structure.setStatusCode(HttpStatus.NOT_FOUND.value());
 		return new ResponseEntity<ResponseStructure<Merchant>>(structure, HttpStatus.NOT_FOUND);
 	}
@@ -78,7 +98,7 @@ public class MerchantService {
 			merchant.setStatus(AccountStatus.ACTIVE.toString());
 			merchant.setToken(null);
              merchantDao.saveMerchant(merchant);
-             structure.setData("Merchant Found");
+             structure.setBody("Merchant Found");
              structure.setMessage("Account Verified");
              structure.setStatusCode(HttpStatus.ACCEPTED.value());
              return new ResponseEntity<ResponseStructure<String>>(structure,HttpStatus.ACCEPTED);

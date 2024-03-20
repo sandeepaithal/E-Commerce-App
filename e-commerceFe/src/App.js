@@ -8,6 +8,8 @@ import MerchantLogin from "./components/MerchantLogin";
 import MerchantHomePage from "./components/MerchantHomePage";
 import UserHomePage from "./components/UserHomePage";
 import UserSignUp from "./components/UserSignUp"
+import Error from "./components/Error";
+import Protect from "./components/Protect";
 
 
 
@@ -20,9 +22,10 @@ function App() {
      <Route path = "/merchant" element={<MerchantLogin/>}></Route>
      <Route path = "/user" element={<Userslogin/>}></Route>
      <Route path="/merchantsignup" element={<MerchantSignUp/>}></Route>
-     <Route path="/merchanthomepage" element={<MerchantHomePage/>}></Route>
+     <Route path="/merchanthomepage/*" element={<Protect Child={MerchantHomePage}/>}></Route>
      <Route path="/usersignup" element={<UserSignUp/>}></Route>
-     <Route path="/userhomepage" element={<UserHomePage/>}></Route>
+     <Route path="/userhomepage/*" element={<UserHomePage/>}></Route>
+     <Route path="/*" element={<Error/>}></Route>
     </Routes>
     </BrowserRouter>
     

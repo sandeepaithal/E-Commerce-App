@@ -19,7 +19,8 @@ const MerchantLogin = () => {
    
     axios.post(`http://localhost:8080/merchants/verifyemail?email=${email}&password=${password}`)
     .then((res)=>{
-      console.log(res);
+      console.log(res.data.body);
+      localStorage.setItem("Merchant",JSON.stringify(res.data.body))
       navigate('/merchanthomepage')
       alert("Login successfull")
     })

@@ -14,6 +14,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
 	@Query("select u from User u where u.email=?1 and u.password=?2")
 	public Optional<User> verifyUser(String email, String password);
 
-	
+	public Optional<User> findByToken(String token);
 	
 }

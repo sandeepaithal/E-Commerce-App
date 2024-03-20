@@ -36,7 +36,7 @@ const UserSignUp = () => {
            <label htmlFor="">Age</label> 
            <input required value={age} onChange={(e)=>{setage(e.target.value)}} type="text" placeholder= "age" ></input>
            <label htmlFor="">Phone</label> 
-           <input required value={phone} onChange={(e)=>{setphone(e.target.value)}} type="tel" placeholder= "Phone no" pattern=" [6789][0-9]{10}" ></input>
+           <input required value={phone} onChange={(e)=>{setphone(e.target.value)}} type="tel" placeholder= "Phone no" ></input>
            <label htmlFor="">Email</label> 
            <input required value={email} onChange={(e)=>{setemail(e.target.value)}} type="email" placeholder= "Email" ></input>
            <label htmlFor="">Password</label> 

@@ -18,6 +18,7 @@ const Userslogin = () => {
     axios.post(`http://localhost:8080/User/verifyemail?email=${email}&password=${password}`)
     .then((res)=>{
       console.log(res);
+      localStorage.setItem("User",JSON.stringify(res.data.body))
       navigate('/userhomepage')
       alert("Login successfull")
     })
