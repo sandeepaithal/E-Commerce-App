@@ -15,4 +15,6 @@ public interface ProductRepository extends JpaRepository<Products, Integer> {
 	@Query("select p from Products p where p.merchant.id=?1")
 	List<Products> findByMerchantId(int merchant_id);
 
+  
+
 }

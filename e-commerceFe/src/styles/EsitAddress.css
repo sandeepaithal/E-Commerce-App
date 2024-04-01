@@ -1,0 +1,35 @@
+.editaddress {
+    max-width: 400px;
+    margin: auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .editaddress label {
+    margin-bottom: 5px;
+    display: block;
+  }
+  
+  .editaddress input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .editaddress button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .editaddress button:hover {
+    background-color: #0056b3;
+  }
+  

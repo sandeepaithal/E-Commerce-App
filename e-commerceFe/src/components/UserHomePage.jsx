@@ -5,6 +5,10 @@ import UserNavbar from './UserNavbar'
 import Address from './Address'
 
 import EditAddress from './EditAddress'
+import AddAddress from './AddAddress'
+import AllProducts from './AllProducts'
+import ReadContent from './ReadContent'
+import Cart from './Cart'
 const UserHomePage = () => {
   return (
     <div className='userhomepage'>
@@ -14,6 +18,11 @@ const UserHomePage = () => {
         <Route path="/updateuser" element={<UpdateUser/>}></Route>
         <Route path="/address" element={<Address/>}></Route>
         <Route path="/address/editaddress" element={<EditAddress/>}></Route>
+        <Route path="/address/addaddress" element={<AddAddress/>}></Route>
+        <Route path="/" element={<AllProducts/>}></Route>
+        <Route path='/readData/:id' element={<ReadContent/>}/>
+        
+        
       </Routes>
     </div>
     

@@ -1,11 +1,35 @@
 package org.jsp.ecommerce.dto;
 
-import lombok.Data;
 
-@Data
 public class ResponseStructure<T> {
-    private String message;
-    private T Body;
-    private int statusCode;
+	 private int statusCode;
+	    private String message;
+	    private T body;
+
+	    // Constructors, getters, and setters
+
+	    public int getStatusCode() {
+	        return statusCode;
+	    }
+
+	    public void setStatusCode(int statusCode) {
+	        this.statusCode = statusCode;
+	    }
+
+	    public String getMessage() {
+	        return message;
+	    }
+
+	    public void setMessage(String message) {
+	        this.message = message;
+	    }
+
+	    public T getBody() {
+	        return body;
+	    }
+
+	    public void setBody(T body) {
+	        this.body = body;
+	    }
     
 }

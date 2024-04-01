@@ -6,10 +6,10 @@ import '../styles/ProductView.css'
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { useNavigate } from 'react-router-dom';
-function ProductView() {
+function AllProducts() {
   let navigate = useNavigate()
   let [item, setitem] = useState([])
-  let admin = JSON.parse(localStorage.getItem("Merchant"))
+  let admin = JSON.parse(localStorage.getItem("User"))
   let [name,setname] = useState("")
   useEffect(() => {
     axios.get(`http://localhost:8080/products/${admin.id}`)
@@ -71,6 +71,9 @@ function ProductView() {
   //     console.log(err);
   //   })
   // }
+  let readData = (id) =>{
+    navigate(`/userhomepage/readData/${id}`)
+  }
   return (
 
     <div className='disp'>
@@ -97,14 +100,14 @@ function ProductView() {
                 <img src={x.image_url} alt="" />
               </div>
               <div className="desc">
-                <h4 id='name'>{x.name} || {x.brand}</h4>
+                <h4 id='name' onClick={()=>{readData(x.id)}}>{x.name} || {x.brand}</h4>
                 <span id='cost'><sup><b>₹</b></sup>{x.cost}</span>
                 <br />
                 <span id='desc'>{x.description}</span>
               </div>
               <div className="icons">
-                <EditIcon  onClick={()=>{editData(x.id)}}/>
-                <DeleteForeverIcon onClick={()=>{removeData(x.name,x.id)}} />
+                {/* <EditIcon  onClick={()=>{editData(x.id)}}/>
+                <DeleteForeverIcon onClick={()=>{removeData(x.name,x.id)}} /> */}
               </div>
             </div>
           </div>
@@ -115,4 +118,4 @@ function ProductView() {
 
   )
 }
-export default ProductView
+export default AllProducts

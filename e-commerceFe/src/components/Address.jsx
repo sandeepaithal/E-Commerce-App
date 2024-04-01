@@ -35,6 +35,7 @@ const Address = () => {
       <p> State : {x.state}</p>
       <button  className="btn btn-outline-info"><Link to="editaddress">Edit</Link></button>
       <button className="btn btn-outline-danger">Delete</button>
+      <button  className="btn btn-outline-info"><Link to="addaddress">Add</Link></button>
       </div>
        )
     })}

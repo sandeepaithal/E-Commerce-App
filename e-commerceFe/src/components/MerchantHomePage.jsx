@@ -4,6 +4,7 @@ import ProductView from './ProductView'
 import MerchantNavbar from './MerchantNavbar'
 import UpdateMerchant from './UpdateMerchant'
 import AddProducts from './AddProducts'
+import UpdateProduct from './UpdateProduct'
 
 const MerchantHomePage = () => {
   return (
@@ -13,6 +14,7 @@ const MerchantHomePage = () => {
         <Route path="/productview" element={<ProductView/>} ></Route>
         <Route path="/updatemerchant" element={<UpdateMerchant/>}></Route>
         <Route path="/addproducts" element={<AddProducts/>}></Route>
+        <Route path="/updateproduct/:id" element={<UpdateProduct/>}></Route>
       </Routes>
     </div>
   )

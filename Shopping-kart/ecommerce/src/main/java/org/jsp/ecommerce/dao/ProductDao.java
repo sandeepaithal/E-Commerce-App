@@ -38,5 +38,15 @@ public class ProductDao {
 		return productRepository.findByCategory(category);
 		
 	}
+	public boolean deleteById(int id) {
+		Optional<Products> recProduct = findById(id);
+		if (recProduct.isPresent()) {
+			productRepository.delete(recProduct.get());
+			return true;
+		}
+		return false;
+	}
+		
+	}
 	
-}
+

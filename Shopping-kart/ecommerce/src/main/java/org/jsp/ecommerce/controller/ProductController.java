@@ -8,6 +8,7 @@ import org.jsp.ecommerce.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,8 +35,8 @@ public class ProductController {
 		return productService.findProductsByMerchantId(merchant_id);
 	}
 	@PutMapping
-	public ResponseEntity<ResponseStructure<Products>> updateProduct(@PathVariable int id) {
-		return productService.findById(id);
+	public ResponseEntity<ResponseStructure<Products>> updateProduct(@RequestBody Products product) {
+		return productService.updateProduct(product);
 	}
 	@GetMapping("/find-by-brand/{brand}")
 	public ResponseEntity<ResponseStructure<List<Products>>> findByBrand(@PathVariable String brand) {
@@ -51,7 +52,22 @@ public class ProductController {
 	public ResponseEntity<ResponseStructure<Products>> findById(@PathVariable int id) {
 		return productService.findById(id);
 	}
-
+	@DeleteMapping(value = "/{id}")
+	public ResponseEntity<ResponseStructure<String>> deleteById(@PathVariable int id){
+		return productService.deleteById(id);
+	}
+	@PutMapping("/{user_id}/{product_id}")
+	public ResponseEntity<ResponseStructure<List<Products>>> addToCart(@PathVariable int user_id,@PathVariable int product_id){
+		return productService.addToCart(user_id, product_id);
+	}
+	@PutMapping("/wishlist/{user_id}/{product_id}")
+	public ResponseEntity<ResponseStructure<List<Products>>> addToWishList(@PathVariable int user_id,@PathVariable int product_id){
+		return productService.addToWishList(user_id, product_id);
+	}
+   @GetMapping("/{user_id}/{product_id})")
+   	public ResponseEntity<ResponseStructure<String>> findByProductId(@PathVariable int user_id,@PathVariable int product_id){
+	   return productService.findByProductId(user_id,product_id);
+   }
 	
 
 	

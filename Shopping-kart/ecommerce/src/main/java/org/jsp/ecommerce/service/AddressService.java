@@ -7,19 +7,13 @@ import org.jsp.ecommerce.dao.AddressDao;
 import org.jsp.ecommerce.dao.UserDao;
 import org.jsp.ecommerce.dto.ResponseStructure;
 import org.jsp.ecommerce.exception.AddressNotFoundException;
-import org.jsp.ecommerce.exception.MerchantNotFoundException;
-import org.jsp.ecommerce.exception.ProductNotFoundException;
 import org.jsp.ecommerce.exception.UserNotFoundException;
 import org.jsp.ecommerce.model.Address;
-import org.jsp.ecommerce.model.Merchant;
-import org.jsp.ecommerce.model.Products;
 import org.jsp.ecommerce.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-
 
 @Service
 public class AddressService {
@@ -42,11 +36,11 @@ public class AddressService {
 		}
 		throw new UserNotFoundException("cannot add Address as User Id is Invalid");
 	}
-	
-	 public ResponseEntity<ResponseStructure<Address>> updateAddress(Address add ) {
-			Optional<Address> recAddress = addressdao.findById(add.getId());
-			ResponseStructure<Address> structure = new ResponseStructure<>();
-			if (recAddress.isPresent()) {
+
+	public ResponseEntity<ResponseStructure<Address>> updateAddress(Address add) {
+		Optional<Address> recAddress = addressdao.findById(add.getId());
+		ResponseStructure<Address> structure = new ResponseStructure<>();
+		if (recAddress.isPresent()) {
 			Address dbAddress = recAddress.get();
 			dbAddress.setLandmark(add.getLandmark());
 			dbAddress.setBuildingname(add.getBuildingname());
@@ -56,17 +50,18 @@ public class AddressService {
 			dbAddress.setState(add.getState());
 			dbAddress.setCountry(add.getCountry());
 			dbAddress.setPincode(add.getPincode());
-				
-		structure.setMessage("Address Updated");
-				structure.setBody(addressdao.saveAddress(add));
-				structure.setStatusCode(HttpStatus.ACCEPTED.value());
-				return new ResponseEntity<ResponseStructure<Address>>(structure, HttpStatus.ACCEPTED);
-			}
-			structure.setMessage("Cannot Update Address as Id is Invalid");
-			structure.setBody(null);
-			structure.setStatusCode(HttpStatus.NOT_FOUND.value());
-			return new ResponseEntity<ResponseStructure<Address>>(structure, HttpStatus.NOT_FOUND);
+
+			structure.setMessage("Address Updated");
+			structure.setBody(addressdao.saveAddress(add));
+			structure.setStatusCode(HttpStatus.ACCEPTED.value());
+			return new ResponseEntity<ResponseStructure<Address>>(structure, HttpStatus.ACCEPTED);
 		}
+		structure.setMessage("Cannot Update Address as Id is Invalid");
+		structure.setBody(null);
+		structure.setStatusCode(HttpStatus.NOT_FOUND.value());
+		return new ResponseEntity<ResponseStructure<Address>>(structure, HttpStatus.NOT_FOUND);
+	}
+
 	public ResponseEntity<ResponseStructure<List<Address>>> findAddressByUserId(int user_id) {
 		ResponseStructure<List<Address>> structure = new ResponseStructure<>();
 		List<Address> address = addressdao.findByUserId(user_id);
@@ -78,7 +73,5 @@ public class AddressService {
 		structure.setStatusCode(HttpStatus.OK.value());
 		return new ResponseEntity<ResponseStructure<List<Address>>>(structure, HttpStatus.OK);
 	}
-		
-	}
 
-
+}

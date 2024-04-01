@@ -13,6 +13,9 @@ const UserNavbar = () => {
             <div className="logo">
                 <h1>SHOPPERS CART <ShoppingCartIcon/></h1>
             </div>
+            <div className="products">
+            </div>
+            
             
             <div className="account">
                 <Dropdown>
@@ -21,6 +24,7 @@ const UserNavbar = () => {
                     </Dropdown.Toggle>
 
                     <Dropdown.Menu>
+                        <Dropdown.Item href="/userhomepage/addaddress">Add Address</Dropdown.Item>
                         <Dropdown.Item href="/userhomepage/updateuser">Edit Profile</Dropdown.Item>
                         <Dropdown.Item href="/userhomepage/address">Address</Dropdown.Item>
                         <Dropdown.Item href="/">logout</Dropdown.Item>
